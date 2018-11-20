@@ -1,4 +1,4 @@
-class SesisonsController < ApplicationController
+class SessionsController < ApplicationController
   def new
   end
 
@@ -25,7 +25,7 @@ class SesisonsController < ApplicationController
   def login(email, password)
     @user = User.find_by(email: email)
     if @user && @user.authenticate(password)
-      sessin[:user_id] = @user.id
+      session[:user_id] = @user.id
       return true
     else
       return false
