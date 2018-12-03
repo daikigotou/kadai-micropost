@@ -9,16 +9,16 @@ class User < ApplicationRecord
   has_many :microposts
   has_many :relationships
   has_many :followings, through: :relationships, source: :follow
-  has_many :reverse_of_relationship, class_name: "Relationship", foreign_key: "follow_id"
-  has_many :followers, through: :reverse_of_relationship, source: :user
+  has_many :reverses_of_relationship, class_name: "Relationship", foreign_key: "follow_id"
+  has_many :followers, through: :reverses_of_relationship, source: :user
   has_many :likes
   has_many :favorites, through: :likes, source: :micropost
-  has_many :reverse_of_likes, class_name: "likes", foreign_key: "micropost_id"
+  has_many :reverse_of_like, class_name: "likes", foreign_key: "micropost_id"
   has_many :liked, through: :reverse_of_likes, source: :user
   
   def follow(other_user)
     unless self == other_user
-    self.relationships.find_or_create_by(follow_id: other_user.id)
+      self.relationships.find_or_create_by(follow_id: other_user.id)
     end
   end
   
@@ -47,7 +47,4 @@ class User < ApplicationRecord
   def favorites?(micropost)
     self.favorites.include?(micropost)
   end
-  
-  
-  
 end
